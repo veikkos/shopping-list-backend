@@ -1,0 +1,31 @@
+{
+  "name": "shopping-list-backend",
+  "version": "1.0.0",
+  "description": "Hosted in Amazon AWS. Uses Lambdas and Dynamo DB.",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha ./lists/tests/* ./products/tests/*",
+    "lint": "eslint **/*.js",
+    "lint-fix": "eslint --fix **/*.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/veikkos/shopping-list-backend.git"
+  },
+  "author": "Veikko Soininen (https://github.com/veikkos)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/veikkos/shopping-list-backend/issues"
+  },
+  "homepage": "https://github.com/veikkos/shopping-list-backend#readme",
+  "dependencies": {
+    "aws-lambda": "^1.0.6"
+  },
+  "devDependencies": {
+    "aws-sdk-mock": "^5.2.1",
+    "chai": "^4.3.4",
+    "eslint": "^7.29.0",
+    "mocha": "^9.0.1",
+    "sinon": "^11.1.1"
+  }
+}
