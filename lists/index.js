@@ -51,6 +51,11 @@ exports.handler = async (event) => {
                 const dbResponse = await dynamo
                     .get(util.idQuery(PK, event.queryStringParameters.id))
                     .promise();
+                if (!dbResponse.Item) {
+                    return {
+                        statusCode: 404,
+                    };
+                }
                 body = {
                     name: dbResponse.Item.name,
                     id: dbResponse.Item.SK,

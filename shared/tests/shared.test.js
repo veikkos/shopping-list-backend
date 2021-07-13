@@ -47,7 +47,7 @@ describe('Unit test for /shared app handler', function () {
         });
     });
 
-    it.only('verifies successful POST response', async () => {
+    it('verifies successful POST response', async () => {
         const result = await testCase({
             lambda,
             event: {

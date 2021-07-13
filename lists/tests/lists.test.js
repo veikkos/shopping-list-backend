@@ -106,6 +106,35 @@ describe('Unit test for /lists app handler', function () {
         });
     });
 
+    it('verifies unsuccessful GET response with ID', async () => {
+        const result = await testCase({
+            lambda,
+            event: {
+                requestContext: {
+                    http: {
+                        method: 'GET',
+                    },
+                },
+                headers: testHeaders,
+                queryStringParameters: {
+                    id: 100,
+                },
+            },
+            dbMethod: 'get',
+            dbInput: {
+                TableName: 'shopping-list',
+                Key: {
+                    PK: 'LIST',
+                    SK: 100,
+                },
+            },
+            dbOutput: {
+            },
+        });
+
+        expect(result.statusCode).to.be.equal(404);
+    });
+
     it('verifies successful POST response', async () => {
         sinon.stub(crypto, 'randomBytes').returns('f57ff3a78c');
 
