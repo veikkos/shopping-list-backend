@@ -4,7 +4,7 @@
   "description": "Hosted in Amazon AWS. Uses Lambdas and Dynamo DB.",
   "main": "index.js",
   "scripts": {
-    "test": "mocha ./lists/tests/* ./products/tests/* ./shared/tests/*",
+    "test": "mocha ./lists/tests/* ./products/tests/* ./shared/tests/* ./preflight/tests/*",
     "lint": "eslint **/*.js",
     "lint-fix": "eslint --fix **/*.js",
     "build": "webpack"
