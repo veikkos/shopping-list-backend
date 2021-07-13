@@ -2,7 +2,7 @@ const crypto = require('crypto');
 
 const tableName = 'shopping-list';
 
-const getId = () => crypto.randomBytes(5).toString('hex');
+const getId = () => crypto.randomBytes(8).toString('hex');
 
 const checkAuth = (event) => {
     if (!event.headers.authorization) {
