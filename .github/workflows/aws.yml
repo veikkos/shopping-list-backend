@@ -1,0 +1,51 @@
+name: Deploy AWS Lambdas
+
+on:
+  workflow_run:
+    workflows: ["Node.js CI"]
+    branches: [master]
+    types:
+      - completed
+
+jobs:
+  deploy_source:
+    name: Update AWS Lambdas
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download artifact
+        uses: dawidd6/action-download-artifact@v2
+        with:
+          workflow: node.js.yml
+          workflow_conclusion: success
+      - name: Deploy /products
+        uses: appleboy/lambda-action@master
+        with:
+          aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws_region: ${{ secrets.AWS_REGION }}
+          function_name: products
+          source: dist/products/index.js
+      - name: Deploy /lists
+        uses: appleboy/lambda-action@master
+        with:
+          aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws_region: ${{ secrets.AWS_REGION }}
+          function_name: lists
+          source: dist/lists/index.js
+      - name: Deploy /shared
+        uses: appleboy/lambda-action@master
+        with:
+          aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws_region: ${{ secrets.AWS_REGION }}
+          function_name: shared
+          source: dist/shared/index.js
+      - name: Deploy pre-flight
+        uses: appleboy/lambda-action@master
+        with:
+          aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws_region: ${{ secrets.AWS_REGION }}
+          function_name: preflight
+          source: dist/preflight/index.js
