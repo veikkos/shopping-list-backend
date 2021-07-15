@@ -25,6 +25,8 @@ const checkAuth = (event) => {
     const base64buffer = Buffer.from(auth[1].split('.')[1], 'base64');
     const token = JSON.parse(base64buffer.toString());
 
+    // Signature is already checked by API Gateway prior to calling the Lambda
+
     return token.sub;
 }
 
