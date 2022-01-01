@@ -8,6 +8,7 @@ module.exports = {
     'dist/lists': path.resolve(__dirname, 'lists/index.js'),
     'dist/shared': path.resolve(__dirname, 'shared/index.js'),
     'dist/preflight': path.resolve(__dirname, 'preflight/index.js'),
+    'dist/authorizer': path.resolve(__dirname, 'authorizer/index.js'),
   },
   output: {
     path: __dirname,
@@ -15,6 +16,6 @@ module.exports = {
     libraryTarget: 'commonjs2',
   },
   target: 'node',
-  externals: [nodeExternals()],
+  //externals: [nodeExternals()],
   mode: 'production',
 };

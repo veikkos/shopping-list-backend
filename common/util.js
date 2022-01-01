@@ -1,11 +1,13 @@
 const crypto = require('crypto');
 
-const tableName = 'shopping-list';
+const tableName = 'shopping-list-2';
 
 const getId = () => crypto.randomBytes(8).toString('hex');
 
 const checkAuth = (event) => {
-    if (!event.headers.authorization) {
+    const authorization = event.headers['Authorization'];
+
+    if (!authorization) {
         const response = {
             statusCode: 401,
             body: 'Missing authorization token',
@@ -13,7 +15,7 @@ const checkAuth = (event) => {
         return { error: response };
     }
 
-    const auth = event.headers.authorization.split(' ');
+    const auth = authorization.split(' ');
     if (auth[0] !== 'Bearer') {
         const response = {
             statusCode: 401,
@@ -55,10 +57,18 @@ const idQuery = (pk, id) => {
     }
 }
 
+const responseHeaders = () => {
+    return {
+        'Access-Control-Allow-Headers' : 'Content-Type',
+        'Access-Control-Allow-Origin': '*',
+    }
+}
+
 module.exports = {
     tableName,
     getId,
     checkAuth,
     userQuery,
     idQuery,
+    responseHeaders,
 }

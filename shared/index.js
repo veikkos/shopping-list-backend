@@ -11,7 +11,7 @@ exports.handler = async (event) => {
         return userId.error;
     }
 
-    const operation = event.requestContext.http.method;
+    const operation = event.requestContext.httpMethod;
 
     switch (operation) {
         case 'GET': {
@@ -22,6 +22,7 @@ exports.handler = async (event) => {
             if (dbResponse.Item) {
                 return {
                     statusCode: 200,
+                    headers: util.responseHeaders(),
                     body: JSON.stringify({
                         lists: dbResponse.Item.lists,
                     }),
@@ -29,6 +30,7 @@ exports.handler = async (event) => {
             } else {
                 return {
                     statusCode: 204,
+                    headers: util.responseHeaders(),
                 }
             }
         }
@@ -47,11 +49,13 @@ exports.handler = async (event) => {
                 .promise();
             return {
                 statusCode: 200,
+                headers: util.responseHeaders(),
             };
         }
     }
 
     return {
         statusCode: 400,
+        headers: util.responseHeaders(),
     };
 };

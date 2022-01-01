@@ -11,7 +11,7 @@ exports.handler = async (event) => {
         return userId.error;
     }
 
-    const operation = event.requestContext.http.method;
+    const operation = event.requestContext.httpMethod;
 
     switch (operation) {
         case 'GET': {
@@ -38,12 +38,14 @@ exports.handler = async (event) => {
 
             return {
                 statusCode: 200,
+                headers: util.responseHeaders(),
                 body: JSON.stringify(body),
             };
         }
         case 'PUT':
             return {
                 statusCode: 503,
+                headers: util.responseHeaders(),
                 body: 'Not supported',
             };
         case 'POST': {
@@ -62,6 +64,7 @@ exports.handler = async (event) => {
                 .promise();
             return {
                 statusCode: 201,
+                headers: util.responseHeaders(),
                 body: productId,
             };
         }
@@ -71,11 +74,13 @@ exports.handler = async (event) => {
                 .promise();
             return {
                 statusCode: 200,
+                headers: util.responseHeaders(),
             };
         }
     }
 
     return {
         statusCode: 400,
+        headers: util.responseHeaders(),
     };
 };

@@ -42,7 +42,7 @@ exports.handler = async (event) => {
         return userId.error;
     }
 
-    const operation = event.requestContext.http.method;
+    const operation = event.requestContext.httpMethod;
 
     switch (operation) {
         case 'GET': {
@@ -54,6 +54,7 @@ exports.handler = async (event) => {
                 if (!dbResponse.Item) {
                     return {
                         statusCode: 404,
+                        headers: util.responseHeaders(),
                     };
                 }
                 body = {
@@ -76,6 +77,7 @@ exports.handler = async (event) => {
 
             return {
                 statusCode: 200,
+                headers: util.responseHeaders(),
                 body: JSON.stringify(body),
             };
         }
@@ -87,6 +89,7 @@ exports.handler = async (event) => {
                 .promise();
             return {
                 statusCode: 200,
+                headers: util.responseHeaders(),
                 body: id,
             };
         }
@@ -98,6 +101,7 @@ exports.handler = async (event) => {
                 .promise();
             return {
                 statusCode: 201,
+                headers: util.responseHeaders(),
                 body: listId,
             };
         }
@@ -107,11 +111,13 @@ exports.handler = async (event) => {
                 .promise();
             return {
                 statusCode: 200,
+                headers: util.responseHeaders(),
             };
         }
     }
 
     return {
         statusCode: 400,
+        headers: util.responseHeaders(),
     };
 };
