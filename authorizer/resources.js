@@ -7,7 +7,6 @@ module.exports.resources = (resource) => {
         return resource.includes(r.functionName.toLowerCase());
     }).functionName.toLowerCase()
 
-    console.log(resourceMatch);
     const resourceArrays = list.lambdas.map((lambda) => {
         return lambda.methods.map((method) => {
             return resource

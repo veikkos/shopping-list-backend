@@ -1,5 +1,5 @@
 const lambda = require('../index');
-const { testCase, cleanup, testHeaders } = require('../../common/tests/util');
+const { testCase, cleanup, testHeaders, testTableName } = require('../../common/tests/util');
 const { expect } = require('chai');
 const sinon = require('sinon');
 const crypto = require('crypto');
@@ -14,15 +14,13 @@ describe('Unit test for /lists app handler', function () {
             lambda,
             event: {
                 requestContext: {
-                    http: {
-                        method: 'GET',
-                    },
+                    httpMethod: 'GET',
                 },
                 headers: testHeaders,
             },
             dbMethod: 'query',
             dbInput: {
-                TableName: 'shopping-list',
+                TableName: testTableName,
                 IndexName: 'PK-user-index',
                 KeyConditionExpression: 'PK = :pk and #user = :u',
                 ExpressionAttributeValues: { ':pk': 'LIST', ':u': '1234' },
@@ -62,9 +60,7 @@ describe('Unit test for /lists app handler', function () {
             lambda,
             event: {
                 requestContext: {
-                    http: {
-                        method: 'GET',
-                    },
+                    httpMethod: 'GET',
                 },
                 headers: testHeaders,
                 queryStringParameters: {
@@ -73,7 +69,7 @@ describe('Unit test for /lists app handler', function () {
             },
             dbMethod: 'get',
             dbInput: {
-                TableName: 'shopping-list',
+                TableName: testTableName,
                 Key: {
                     PK: 'LIST',
                     SK: 100,
@@ -111,9 +107,7 @@ describe('Unit test for /lists app handler', function () {
             lambda,
             event: {
                 requestContext: {
-                    http: {
-                        method: 'GET',
-                    },
+                    httpMethod: 'GET',
                 },
                 headers: testHeaders,
                 queryStringParameters: {
@@ -122,7 +116,7 @@ describe('Unit test for /lists app handler', function () {
             },
             dbMethod: 'get',
             dbInput: {
-                TableName: 'shopping-list',
+                TableName: testTableName,
                 Key: {
                     PK: 'LIST',
                     SK: 100,
@@ -142,9 +136,7 @@ describe('Unit test for /lists app handler', function () {
             lambda,
             event: {
                 requestContext: {
-                    http: {
-                        method: 'POST',
-                    },
+                    httpMethod: 'POST',
                 },
                 headers: testHeaders,
                 body: JSON.stringify({
@@ -158,7 +150,7 @@ describe('Unit test for /lists app handler', function () {
             },
             dbMethod: 'put',
             dbInput: {
-                TableName: 'shopping-list',
+                TableName: testTableName,
                 Item: {
                     PK: 'LIST',
                     SK: 'f57ff3a78c',
@@ -184,9 +176,7 @@ describe('Unit test for /lists app handler', function () {
             lambda,
             event: {
                 requestContext: {
-                    http: {
-                        method: 'PUT',
-                    },
+                    httpMethod: 'PUT',
                 },
                 headers: testHeaders,
                 queryStringParameters: {
@@ -203,7 +193,7 @@ describe('Unit test for /lists app handler', function () {
             },
             dbMethod: 'update',
             dbInput: {
-                TableName: 'shopping-list',
+                TableName: testTableName,
                 ExpressionAttributeNames: {
                     '#name': 'name',
                 },
@@ -234,9 +224,7 @@ describe('Unit test for /lists app handler', function () {
             lambda,
             event: {
                 requestContext: {
-                    http: {
-                        method: 'DELETE',
-                    },
+                    httpMethod: 'DELETE',
                 },
                 headers: testHeaders,
                 queryStringParameters: {
@@ -245,7 +233,7 @@ describe('Unit test for /lists app handler', function () {
             },
             dbMethod: 'delete',
             dbInput: {
-                TableName: 'shopping-list',
+                TableName: testTableName,
                 Key: {
                     PK: 'LIST',
                     SK: 'f57ff3a78c',
@@ -263,9 +251,7 @@ describe('Unit test for /lists app handler', function () {
             lambda,
             event: {
                 requestContext: {
-                    http: {
-                        method: 'GET',
-                    },
+                    httpMethod: 'GET',
                 },
                 headers: {
                 },

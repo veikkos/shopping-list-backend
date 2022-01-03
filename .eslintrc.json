@@ -23,5 +23,6 @@
                 "functions": "never"
             }
         ]
-    }
+    },
+    "ignorePatterns": [ "dist/*", "cdk.out/*" ]
 }

@@ -7,7 +7,7 @@
     "cdk": "dist/bin/lambda.js"
   },
   "scripts": {
-    "test": "mocha ./lists/tests/* ./products/tests/* ./shared/tests/* ./preflight/tests/*",
+    "test": "tsc && mocha ./authorizer/tests/* ./lists/tests/* ./products/tests/* ./shared/tests/* ./preflight/tests/*",
     "lint": "eslint **/*.js",
     "lint-fix": "eslint --fix **/*.js",
     "build": "tsc && webpack && webpack --config webpack.config.authorizer.js",

@@ -26,11 +26,14 @@ const cleanup = () => {
 }
 
 const testHeaders = {
-    authorization: 'Bearer ABC.eyJzdWIiOiIxMjM0In0=.123',
+    'Authorization': 'Bearer ABC.eyJzdWIiOiIxMjM0In0=.123',
 }
+
+const testTableName = 'shopping-list-2'
 
 module.exports = {
     testCase,
     cleanup,
     testHeaders,
+    testTableName,
 }

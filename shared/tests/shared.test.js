@@ -1,5 +1,5 @@
 const lambda = require('../index');
-const { testCase, cleanup, testHeaders } = require('../../common/tests/util');
+const { testCase, cleanup, testHeaders, testTableName } = require('../../common/tests/util');
 const { expect } = require('chai');
 
 describe('Unit test for /shared app handler', function () {
@@ -12,9 +12,7 @@ describe('Unit test for /shared app handler', function () {
             lambda,
             event: {
                 requestContext: {
-                    http: {
-                        method: 'GET',
-                    },
+                    httpMethod: 'GET',
                 },
                 headers: testHeaders,
             },
@@ -24,7 +22,7 @@ describe('Unit test for /shared app handler', function () {
                     PK: 'SHARED',
                     SK: '1234',
                 },
-                TableName: 'shopping-list',
+                TableName: testTableName,
             },
             dbOutput: {
                 Item: {
@@ -52,9 +50,7 @@ describe('Unit test for /shared app handler', function () {
             lambda,
             event: {
                 requestContext: {
-                    http: {
-                        method: 'POST',
-                    },
+                    httpMethod: 'POST',
                 },
                 headers: testHeaders,
                 body: JSON.stringify({
@@ -66,7 +62,7 @@ describe('Unit test for /shared app handler', function () {
             },
             dbMethod: 'put',
             dbInput: {
-                TableName: 'shopping-list',
+                TableName: testTableName,
                 Item: {
                     PK: 'SHARED',
                     SK: '1234',
