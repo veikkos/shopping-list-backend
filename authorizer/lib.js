@@ -1,6 +1,7 @@
 const jwksClient = require('jwks-rsa');
 const jwt = require('jsonwebtoken');
 const util = require('util');
+const { resources } = require('./resources');
 
 const getPolicyDocument = (effect, resource) => {
     const policyDocument = {
@@ -8,7 +9,7 @@ const getPolicyDocument = (effect, resource) => {
         Statement: [{
             Action: 'execute-api:Invoke', // default action
             Effect: effect,
-            Resource: resource,
+            Resource: resources(resource), // This line has been changed from original library
         }],
     };
     return policyDocument;

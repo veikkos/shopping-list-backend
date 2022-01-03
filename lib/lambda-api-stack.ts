@@ -3,14 +3,9 @@ import { Function, Runtime, AssetCode } from "aws-cdk-lib/aws-lambda"
 import { Duration, Stack, StackProps } from "aws-cdk-lib"
 import { Construct } from "constructs"
 import { AttributeType, Table } from "aws-cdk-lib/aws-dynamodb"
+import { Lambda, lambdas } from "./lambda-list"
 
 interface LambdaApiStackProps extends StackProps {
-}
-
-interface Lambda {
-    functionName: string,
-    codePath: string,
-    methods: string[],
 }
 
 export class LambdaApiStack extends Stack {
@@ -50,6 +45,7 @@ export class LambdaApiStack extends Stack {
                 allowMethods: ['OPTIONS', 'GET', 'POST', 'PUT', 'DELETE'],
                 allowCredentials: true,
                 allowOrigins: ['https://kauppalistat.herokuapp.com', 'http://localhost:3000'],
+                maxAge: Duration.minutes(10),
             }
         })
     }
@@ -80,45 +76,35 @@ export class LambdaApiStack extends Stack {
         return table;
     }
 
+    commonLambdaParameter() {
+        return {
+            runtime: Runtime.NODEJS_14_X,
+            memorySize: 128,
+            timeout: Duration.seconds(10),
+        };
+    }
+
     createAuthorizer() {
         const authorizerFunction = new Function(this, "Authorizer", {
             functionName: "Authorizer",
             handler: "index.handler",
-            runtime: Runtime.NODEJS_14_X,
             code: new AssetCode(`./dist/authorizer`),
-            memorySize: 128,
-            timeout: Duration.seconds(10),
+            ...this.commonLambdaParameter(),
         })
 
         return new TokenAuthorizer(this, "TokenAuthorizer", {
             handler: authorizerFunction,
-            resultsCacheTtl: Duration.millis(0)
+            resultsCacheTtl: Duration.minutes(5),
         })
     }
 
     createLambdas(restApi: RestApi, table: Table, tokenAuthorizer: TokenAuthorizer) {
-        const lambdas: Lambda[] = [{
-            functionName: "Products",
-            codePath: "products",
-            methods: ["GET", "PUT", "POST", "DELETE"],
-        }, {
-            functionName: "Lists",
-            codePath: "lists",
-            methods: ["GET", "PUT", "POST", "DELETE"],
-        }, {
-            functionName: "Shared",
-            codePath: "shared",
-            methods: ["GET", "PUT", "POST"],
-        }];
-
         lambdas.forEach((lambda: Lambda) => {
             const lambdaFunction = new Function(this, lambda.functionName, {
                 functionName: lambda.functionName,
                 handler: "index.handler",
-                runtime: Runtime.NODEJS_14_X,
                 code: new AssetCode(`./dist/${lambda.codePath}`),
-                memorySize: 128,
-                timeout: Duration.seconds(10),
+                ...this.commonLambdaParameter(),
             })
 
             const resource = restApi.root.addResource(lambda.functionName.toLowerCase());
