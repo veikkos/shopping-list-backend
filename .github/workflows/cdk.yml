@@ -1,0 +1,30 @@
+# https://github.com/marketplace/actions/aws-cdk-github-actions
+name: CDK Deployment
+
+on: [push]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [15.x]
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v1
+      with:
+        node-version: ${{ matrix.node-version }}
+    - run: npm ci
+    - run: npm run cdk:deploy
+      env:
+        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        AWS_DEFAULT_REGION: ${{ secrets.AWS_REGION }}
+        FRONTEND_URI: ${{ secrets.FRONTEND_URI }}
+        ALTERNATIVE_URI: ${{ secrets.FRONTEND_ALTERNATIVE_URI }}
+        AUDIENCE: ${{ secrets.AUTH_AUDIENCE }}
+        ISSUER: ${{ secrets.JWT_ISSUER }}
+        JWKS_URI: ${{ secrets.JWKS_URI }}
