@@ -35,8 +35,8 @@ const getToken = (params) => {
 }
 
 const jwtOptions = {
-    audience: '<redacted>',
-    issuer: '<redacted>',
+    audience: process.env.AUDIENCE,
+    issuer: process.env.ISSUER,
 };
 
 module.exports.authenticate = (params) => {
@@ -65,5 +65,5 @@ const client = jwksClient({
     cache: true,
     rateLimit: true,
     jwksRequestsPerMinute: 10, // Default value
-    jwksUri: '<redacted>',
+    jwksUri: process.env.JWKS_URI,
 });

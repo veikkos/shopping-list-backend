@@ -44,7 +44,7 @@ export class LambdaApiStack extends Stack {
                 ],
                 allowMethods: ['OPTIONS', 'GET', 'POST', 'PUT', 'DELETE'],
                 allowCredentials: true,
-                allowOrigins: ['https://kauppalistat.herokuapp.com', 'http://localhost:3000'],
+                allowOrigins: [process.env.FRONTEND_URI!, process.env.ALTERNATIVE_URI!],
                 maxAge: Duration.minutes(10),
             }
         })
@@ -89,6 +89,11 @@ export class LambdaApiStack extends Stack {
             functionName: "Authorizer",
             handler: "index.handler",
             code: new AssetCode(`./dist/authorizer`),
+            environment: {
+                AUDIENCE: process.env.AUDIENCE!,
+                ISSUER: process.env.ISSUER!,
+                JWKS_URI: process.env.JWKS_URI!,
+            },
             ...this.commonLambdaParameter(),
         })
 
