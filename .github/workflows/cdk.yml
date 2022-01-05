@@ -1,7 +1,12 @@
 # https://github.com/marketplace/actions/aws-cdk-github-actions
 name: CDK Deployment
 
-on: [push]
+on:
+  workflow_run:
+    workflows: ["Node.js CI"]
+    branches: [master]
+    types:
+      - completed
 
 jobs:
   deploy:
